@@ -3,7 +3,6 @@ package ru.practicum.ewm.user;
 
 import ru.practicum.ewm.user.dto.NewUserRequest;
 import ru.practicum.ewm.user.dto.UserDto;
-import ru.practicum.ewm.user.model.User;
 
 import java.util.List;
 

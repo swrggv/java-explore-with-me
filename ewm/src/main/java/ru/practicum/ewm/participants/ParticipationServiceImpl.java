@@ -56,7 +56,7 @@ public class ParticipationServiceImpl implements ParticipationService {
         ParticipationRequest request = fromOptionalToRequest(requestId);
         Event event = request.getEvent();
         if (request.getRequestor().getId() == userId) {
-            if(request.getStatus() == Status.CONFIRMED) {
+            if (request.getStatus() == Status.CONFIRMED) {
                 event.setConfirmedRequests(event.getConfirmedRequests() - 1);
                 eventRepository.save(event);
             }

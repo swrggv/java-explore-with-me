@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
     private final Client client;
 
     @Autowired
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService{
         String end = LocalDateTime.now().plusYears(1000).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<ViewStats> views = client.stats(start, end, List.of(uri), false);
         log.info("Get statistic {}", uri);
-        if(views != null && views.size() > 0) {
+        if (views != null && views.size() > 0) {
             return views.get(0).getHits();
         } else {
             return 0;
