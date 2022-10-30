@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  stats:
+  stats-server:
     build: ./stats
-    container_name: stats
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
@@ -10,14 +10,14 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/hits
 
-  ewm:
+  ewm-service:
     build: ./ewm
-    container_name: ewm
+    container_name: ewm-service
     ports:
       - "8080:8080"
     depends_on:
       - ewm-db
-      - stats
+      - stats-server
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/explore-with-me
       - STATS_URL=http://stats:9090
