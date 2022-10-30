@@ -92,7 +92,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     public ParticipationRequestDto confirmRequest(long eventId, long reqId, long userId) {
         Event event = fromOptionalToEvent(eventId);
         ParticipationRequest request = fromOptionalToRequest(reqId);
-        if (event.getConfirmedRequests() < event.getParticipantLimit() | event.getParticipantLimit() == 0) {
+        if (event.getConfirmedRequests() < event.getParticipantLimit() || event.getParticipantLimit() == 0) {
             request.setStatus(Status.CONFIRMED);
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
             participationRepository.save(request);
