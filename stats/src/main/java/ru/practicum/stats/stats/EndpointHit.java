@@ -3,13 +3,9 @@ package ru.practicum.stats.stats;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.net.InetAddress;
-import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor

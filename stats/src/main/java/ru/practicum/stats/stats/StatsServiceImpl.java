@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class StatsServiceImpl implements StatsService{
+public class StatsServiceImpl implements StatsService {
     private final StatsRepository statsRepository;
 
     @Autowired
@@ -30,7 +30,7 @@ public class StatsServiceImpl implements StatsService{
         List<EndpointHit> hits;
 
         for (String uri : uris) {
-            if(unique) {
+            if (unique) {
                 hits = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
             } else {
                 hits = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
