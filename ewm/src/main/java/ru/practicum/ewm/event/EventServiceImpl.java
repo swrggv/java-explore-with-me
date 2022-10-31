@@ -97,17 +97,6 @@ public class EventServiceImpl implements EventService {
         Root<Event> root = criteriaQuery.from(Event.class);
         List<Predicate> predicates = getPredicatesAdmin(users, states, categories, rangeStart, rangeEnd, criteriaBuilder, root);
         int page = pageNumber(from, size);
-
-        /*if (users != null) {
-            predicates.add(criteriaBuilder.or(root.get("initiator").in(users)));
-        }
-        if (states != null) {
-            predicates.add(criteriaBuilder.or(root.get("state").in(states)));
-        }
-        if (categories != null) {
-            predicates.add(criteriaBuilder.or(root.get("category").in(categories)));
-        }*/
-
         criteriaQuery.select(root).where(predicates.toArray(Predicate[]::new)).orderBy(criteriaBuilder.desc(root.get("id")));
         List<Event> events = entityManager.createQuery(criteriaQuery)
                 .setMaxResults(size)
@@ -131,29 +120,7 @@ public class EventServiceImpl implements EventService {
         Root<Event> root = criteriaQuery.from(Event.class);
         List<Predicate> predicates = getPredicatesPublic(text, categories, paid, rangeStart, rangeEnd, criteriaBuilder, root);
         List<Event> events;
-        //rangeStart = rangeStart == null ? LocalDateTime.now() : rangeStart;
         int page = pageNumber(from, size);
-
-        /*predicates.add(criteriaBuilder.equal(root.get("state"), State.PUBLISHED));
-        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventDate"), rangeStart));*/
-
-
-        /*if (text != null) {
-            Predicate one = criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text.toLowerCase() + "%");
-            Predicate two = criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text.toLowerCase() + "%");
-            Predicate res = criteriaBuilder.or(one, two);
-            predicates.add(res);
-        }
-        if (categories != null) {
-            predicates.add(criteriaBuilder.or(root.get("category").in(categories)));
-        }
-        if (paid != null) {
-            predicates.add(criteriaBuilder.equal(root.get("paid"), paid));
-        }
-        if (rangeEnd != null) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("eventDate"), rangeEnd));
-        }*/
-
         criteriaQuery.select(root).where(predicates.toArray(Predicate[]::new));
 
         if (sort.equals("EVENT_DATE")) {

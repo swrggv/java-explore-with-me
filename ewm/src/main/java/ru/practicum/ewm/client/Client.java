@@ -10,7 +10,7 @@ import ru.practicum.ewm.endpointHit.ViewStats;
 
 import java.util.List;
 
-@FeignClient(value = "stats", url = "http://stats:9090")
+@FeignClient(value = "stats", url = "${feign.url}")
 public interface Client {
     @RequestMapping(method = RequestMethod.POST, value = "/hit")
     void hit(@RequestBody EndpointHit endpointHit);

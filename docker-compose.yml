@@ -20,7 +20,8 @@ services:
       - stats-server
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/explore-with-me
-      - STATS_URL=http://stats:9090
+      #- STATS_URL=http://stats-server:9090
+      - FEIGN_URL=http://stats-server:9090
 
   stats-db:
     image: postgres:13.7-alpine
