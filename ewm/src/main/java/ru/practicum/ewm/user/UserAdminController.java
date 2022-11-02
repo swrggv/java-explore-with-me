@@ -1,7 +1,7 @@
 package ru.practicum.ewm.user;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.Create;
@@ -14,13 +14,9 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/admin/users")
+@RequiredArgsConstructor
 public class UserAdminController {
     private final UserService userService;
-
-    @Autowired
-    public UserAdminController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,

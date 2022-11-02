@@ -19,7 +19,6 @@ public class MyExceptionHandler {
     public ErrorResponse handleMethodArgumentNotValidException(Exception ex) {
         log.warn(ex.getMessage());
         return ErrorResponse.builder()
-                //.errors(Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
                 .message(ex.getMessage())
                 .reason("Validation Exception")
                 .status(HttpStatus.BAD_REQUEST.toString())

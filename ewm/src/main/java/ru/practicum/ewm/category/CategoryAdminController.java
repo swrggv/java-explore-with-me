@@ -1,7 +1,7 @@
 package ru.practicum.ewm.category;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.Create;
@@ -12,13 +12,9 @@ import ru.practicum.ewm.category.dto.NewCategoryDto;
 @Validated
 @RequestMapping("/admin/categories")
 @Slf4j
+@RequiredArgsConstructor
 public class CategoryAdminController {
     private final CategoryService categoryService;
-
-    @Autowired
-    public CategoryAdminController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @PostMapping
     public CategoryDto addCategory(@RequestBody @Validated(Create.class) NewCategoryDto newCategoryDto) {

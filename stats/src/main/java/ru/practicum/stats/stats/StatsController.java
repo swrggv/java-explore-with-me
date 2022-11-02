@@ -1,9 +1,11 @@
 package ru.practicum.stats.stats;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.stats.stats.model.EndpointHit;
+import ru.practicum.stats.stats.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,21 +15,19 @@ import java.util.List;
 @Validated
 @RequestMapping
 @Slf4j
-public class StatsController {
+@RequiredArgsConstructor
+public class StatsController  implements ClientApi{
     private final StatsService statsService;
 
-    @Autowired
-    public StatsController(StatsService statsService) {
-        this.statsService = statsService;
-    }
-
     @PostMapping("/hit")
+    @Override
     public void hit(@RequestBody EndpointHit endpointHit) {
         log.info("Hit {}", endpointHit);
         statsService.hit(endpointHit);
     }
 
     @GetMapping("/stats")
+    @Override
     public List<ViewStats> stats(@RequestParam String start,
                                  @RequestParam String end,
                                  @RequestParam(required = false) List<String> uris,

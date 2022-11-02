@@ -1,18 +1,15 @@
-package ru.practicum.ewm.client;
+package ru.practicum.stats.stats;
 
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.practicum.stats.stats.ClientApi;
 import ru.practicum.stats.stats.model.EndpointHit;
 import ru.practicum.stats.stats.model.ViewStats;
 
 import java.util.List;
 
-@FeignClient(value = "stats", url = "${feign.url}")
-public interface Client extends ClientApi {
+public interface ClientApi {
     @RequestMapping(method = RequestMethod.POST, value = "/hit")
     void hit(@RequestBody EndpointHit endpointHit);
 

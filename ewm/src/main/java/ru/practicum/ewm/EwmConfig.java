@@ -13,9 +13,9 @@ import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class EwmConfig {
-    @Value("yyyy-MM-dd")
+    @Value("${format.pattern.date}")
     private String dateFormat;
-    @Value("yyyy-MM-dd HH:mm:ss")
+    @Value("${format.pattern.datetime}")
     private String dateTimeFormat;
 
     @Bean

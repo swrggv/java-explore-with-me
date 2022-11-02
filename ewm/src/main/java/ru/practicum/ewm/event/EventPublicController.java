@@ -1,7 +1,7 @@
 package ru.practicum.ewm.event;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.client.ClientService;
@@ -20,15 +20,10 @@ import java.util.List;
 @Validated
 @RequestMapping("/events")
 @Slf4j
+@RequiredArgsConstructor
 public class EventPublicController {
     private final EventService eventService;
     private final ClientService clientService;
-
-    @Autowired
-    public EventPublicController(EventService eventService, ClientService clientService) {
-        this.eventService = eventService;
-        this.clientService = clientService;
-    }
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(required = false) String text,

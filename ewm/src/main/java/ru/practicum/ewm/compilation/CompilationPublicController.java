@@ -1,7 +1,7 @@
 package ru.practicum.ewm.compilation;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
@@ -15,13 +15,9 @@ import java.util.List;
 @Validated
 @RequestMapping("/compilations")
 @Slf4j
+@RequiredArgsConstructor
 public class CompilationPublicController {
     public final CompilationService compilationService;
-
-    @Autowired
-    public CompilationPublicController(CompilationService compilationService) {
-        this.compilationService = compilationService;
-    }
 
     @GetMapping
     public List<CompilationDto> getCompilations(@RequestParam(defaultValue = "false") Boolean pinned,

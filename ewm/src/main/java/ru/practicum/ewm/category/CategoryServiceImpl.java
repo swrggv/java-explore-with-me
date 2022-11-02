@@ -1,6 +1,6 @@
 package ru.practicum.ewm.category;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,17 +12,12 @@ import ru.practicum.ewm.exception.ModelAlreadyExistException;
 import ru.practicum.ewm.exception.ModelNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     @Transactional
@@ -53,13 +48,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategory(int idCategory) {
-        Optional<Category> category = categoryRepository.findById(idCategory);
-        if (category.isPresent()) {
-            return CategoryMapper.toCategoryDtoFromCategory(category.get());
-        } else {
-            throw new ModelNotFoundException("Can not get category",
-                    String.format("Category %d does not exist", idCategory));
-        }
+        Category category = categoryRepository.findById(idCategory).orElseThrow(
+                () -> new ModelNotFoundException("Impossible find category",
+                        String.format("Category %d not found", idCategory)));
+        return CategoryMapper.toCategoryDtoFromCategory(category);
     }
 
     @Override
@@ -80,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private boolean checkNameExist(String name) {
-        return categoryRepository.existsCategoriesByName(name);
+        return categoryRepository.existsByName(name);
     }
 
     private boolean isExistCategoryById(int id) {

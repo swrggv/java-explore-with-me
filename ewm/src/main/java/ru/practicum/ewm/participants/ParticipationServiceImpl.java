@@ -1,6 +1,6 @@
 package ru.practicum.ewm.participants;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.event.EventRepository;
@@ -20,19 +20,11 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class ParticipationServiceImpl implements ParticipationService {
     private final ParticipationRepository participationRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public ParticipationServiceImpl(ParticipationRepository participationRepository,
-                                    EventRepository eventRepository,
-                                    UserRepository userRepository) {
-        this.participationRepository = participationRepository;
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     @Transactional

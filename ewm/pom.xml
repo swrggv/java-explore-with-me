@@ -17,7 +17,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>ru.practicum</groupId>
+            <artifactId>stats</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -36,7 +40,6 @@
             <groupId>ru.practicum</groupId>
             <artifactId>stats</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>
@@ -44,19 +47,17 @@
     <build>
         <plugins>
             <plugin>
-
-                <!-- Building an executable jar -->
-
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
                     <archive>
                         <manifest>
-
-                            <!-- give full qualified name of your main class-->
                             <mainClass>ru.practicum.ewm.EwmApplication</mainClass>
-
                         </manifest>
                     </archive>
                 </configuration>

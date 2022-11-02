@@ -1,6 +1,6 @@
 package ru.practicum.ewm.compilation;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,17 +21,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
     private final ClientService clientService;
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-
-    @Autowired
-    public CompilationServiceImpl(ClientService clientService, CompilationRepository compilationRepository, EventRepository eventRepository) {
-        this.clientService = clientService;
-        this.compilationRepository = compilationRepository;
-        this.eventRepository = eventRepository;
-    }
 
     @Override
     @Transactional

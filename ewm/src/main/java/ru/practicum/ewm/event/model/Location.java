@@ -17,7 +17,7 @@ public class Location {
     @Column(name = "id_location")
     private long id;
     @Column(name = "lat")
-    private float lat; //широта
+    private float lat;
     @Column(name = "lon")
-    private float lon; //долгота
+    private float lon;
 }

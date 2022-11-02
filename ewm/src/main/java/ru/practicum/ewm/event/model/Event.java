@@ -55,7 +55,6 @@ public class Event {
     private State state = State.PENDING;
     @ManyToOne
     @JoinColumn(name = "id_initiator", referencedColumnName = "id_user")
-    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User initiator;
     @OneToMany
     @JoinColumn(name = "id_participation_request")

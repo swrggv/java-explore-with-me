@@ -1,4 +1,4 @@
-package ru.practicum.stats.stats;
+package ru.practicum.stats.stats.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +24,5 @@ public class EndpointHit {
     @Column(name = "ip")
     String ip;
     @Column(name = "timestamp")
-    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime timestamp;
 }

@@ -1,5 +1,6 @@
 package ru.practicum.ewm.event;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
@@ -34,16 +36,6 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
 
     private final EntityManager entityManager;
-
-    public EventServiceImpl(EventRepository eventRepository,
-                            CategoryRepository categoryRepository, ClientService clientService,
-                            UserRepository userRepository, EntityManager entityManager) {
-        this.eventRepository = eventRepository;
-        this.categoryRepository = categoryRepository;
-        this.clientService = clientService;
-        this.userRepository = userRepository;
-        this.entityManager = entityManager;
-    }
 
     @Override
     @Transactional
@@ -161,7 +153,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getAllEventsPrivate(Long userId, int from, int size) {
         int page = pageNumber(from, size);
-        List<Event> events = eventRepository.findByInitiator(userId, PageRequest.of(page, size));
+        List<Event> events = eventRepository.findByInitiatorId(userId, PageRequest.of(page, size));
         return transferToShortEventDto(events);
     }
 

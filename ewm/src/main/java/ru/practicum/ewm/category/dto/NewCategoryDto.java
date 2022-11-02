@@ -7,7 +7,6 @@ import ru.practicum.ewm.Create;
 
 import javax.validation.constraints.NotBlank;
 
-//при создании
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

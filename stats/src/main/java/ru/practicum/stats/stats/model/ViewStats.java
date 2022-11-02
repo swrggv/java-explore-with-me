@@ -1,16 +1,14 @@
-package ru.practicum.ewm.endpointHit;
+package ru.practicum.stats.stats.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.net.URI;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViewStats {
     String app;
-    URI uri;
+    String uri;
     int hits;
 }

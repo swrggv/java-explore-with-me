@@ -1,7 +1,7 @@
 package ru.practicum.ewm.participants;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.participants.dto.ParticipationRequestDto;
@@ -12,13 +12,9 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/users/{userId}/requests")
+@RequiredArgsConstructor
 public class ParticipationPrivateController {
     private final ParticipationService participationService;
-
-    @Autowired
-    public ParticipationPrivateController(ParticipationService participationService) {
-        this.participationService = participationService;
-    }
 
     @GetMapping
     public List<ParticipationRequestDto> getRequests(@PathVariable long userId) {

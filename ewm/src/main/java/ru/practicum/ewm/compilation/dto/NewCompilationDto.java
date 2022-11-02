@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewCompilationDto {
-    //делать сэт?
     private List<Long> events = new ArrayList<>();
     private boolean pinned;
     private String title;

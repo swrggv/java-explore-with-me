@@ -1,8 +1,10 @@
 package ru.practicum.stats.stats;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.stats.stats.model.EndpointHit;
+import ru.practicum.stats.stats.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,13 +12,9 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class StatsServiceImpl implements StatsService {
     private final StatsRepository statsRepository;
-
-    @Autowired
-    public StatsServiceImpl(StatsRepository statsRepository) {
-        this.statsRepository = statsRepository;
-    }
 
     @Override
     @Transactional
