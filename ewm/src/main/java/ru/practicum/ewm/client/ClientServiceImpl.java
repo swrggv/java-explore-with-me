@@ -3,8 +3,8 @@ package ru.practicum.ewm.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.stats.EndpointHit;
-import ru.practicum.ewm.stats.ViewStats;
+import ru.practicum.stats.stats.model.EndpointHit;
+import ru.practicum.stats.stats.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.practicum.ewm.stats.EndpointHit;
-import ru.practicum.ewm.stats.ViewStats;
+import ru.practicum.stats.stats.model.EndpointHit;
+import ru.practicum.stats.stats.model.ViewStats;
 
 import java.util.List;
 
