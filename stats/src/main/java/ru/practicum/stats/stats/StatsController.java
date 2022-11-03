@@ -16,18 +16,16 @@ import java.util.List;
 @RequestMapping
 @Slf4j
 @RequiredArgsConstructor
-public class StatsController  implements ClientApi{
+public class StatsController {
     private final StatsService statsService;
 
     @PostMapping("/hit")
-    @Override
     public void hit(@RequestBody EndpointHit endpointHit) {
         log.info("Hit {}", endpointHit);
         statsService.hit(endpointHit);
     }
 
     @GetMapping("/stats")
-    @Override
     public List<ViewStats> stats(@RequestParam String start,
                                  @RequestParam String end,
                                  @RequestParam(required = false) List<String> uris,
