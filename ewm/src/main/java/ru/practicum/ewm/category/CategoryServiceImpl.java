@@ -12,7 +12,6 @@ import ru.practicum.ewm.exception.BadRequestException;
 import ru.practicum.ewm.exception.ModelAlreadyExistException;
 import ru.practicum.ewm.exception.ModelNotFoundException;
 
-import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @Service
