@@ -56,7 +56,19 @@ public class MyExceptionHandler {
         log.warn(ex.getMessage());
         return ErrorResponse.builder()
                 .message(ex.getMessage())
-                .reason(ex.getCause().toString())
+                .reason(ex.getReason())
+                .status(HttpStatus.CONFLICT.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBadRequestException(BadRequestException ex) {
+        log.warn(ex.getMessage());
+        return ErrorResponse.builder()
+                .message(ex.getMessage())
+                .reason(ex.getReason())
                 .status(HttpStatus.CONFLICT.toString())
                 .timestamp(LocalDateTime.now())
                 .build();

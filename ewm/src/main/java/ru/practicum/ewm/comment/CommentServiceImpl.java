@@ -55,6 +55,11 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.toCommentDtoFromComment(comment);
     }
 
+    @Override
+    public void deleteCommentAdmin(long comId) {
+        commentRepository.deleteById(comId);
+    }
+
     private void checkOwner(Comment comment, long userId) {
         if (comment.getUser().getId() != userId) {
             throw new NoRootException("No root",

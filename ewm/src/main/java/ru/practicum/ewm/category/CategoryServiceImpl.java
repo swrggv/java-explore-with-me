@@ -8,9 +8,11 @@ import ru.practicum.ewm.category.dto.CategoryDto;
 import ru.practicum.ewm.category.dto.CategoryMapper;
 import ru.practicum.ewm.category.dto.NewCategoryDto;
 import ru.practicum.ewm.category.model.Category;
+import ru.practicum.ewm.exception.BadRequestException;
 import ru.practicum.ewm.exception.ModelAlreadyExistException;
 import ru.practicum.ewm.exception.ModelNotFoundException;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @Service
@@ -41,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category result = patch(oldCategory, newCategory);
             return CategoryMapper.toCategoryDtoFromCategory(categoryRepository.save(result));
         } else {
-            throw new ModelNotFoundException("Category not found",
+            throw new BadRequestException("Category not found",
                     String.format("Category %d not found", categoryDto.getId()));
         }
     }
