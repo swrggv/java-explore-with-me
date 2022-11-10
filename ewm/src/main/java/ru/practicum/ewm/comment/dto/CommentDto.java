@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDto {
-    long id;
-    String text;
-    long userId;
-    long eventId;
+    private long id;
+    private String text;
+    private long userId;
+    private long eventId;
 }
