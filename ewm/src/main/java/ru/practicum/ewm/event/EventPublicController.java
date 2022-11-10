@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -39,8 +37,7 @@ public class EventPublicController {
         log.info("Public get list events with parameters");
         clientService.hit(request.getRemoteAddr(), request.getRequestURI());
         return eventService.getEventsPublic(text, categories, paid,
-                LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                rangeStart, rangeEnd,
                 onlyAvailable, sort,
                 from, size);
     }

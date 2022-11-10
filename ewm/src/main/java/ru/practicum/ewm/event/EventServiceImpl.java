@@ -21,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -101,8 +102,8 @@ public class EventServiceImpl implements EventService {
     public List<EventShortDto> getEventsPublic(String text,
                                                List<Integer> categories,
                                                Boolean paid,
-                                               LocalDateTime rangeStart,
-                                               LocalDateTime rangeEnd,
+                                               String rangeStart,
+                                               String rangeEnd,
                                                Boolean onlyAvailable,
                                                String sort,
                                                int from,
@@ -110,7 +111,10 @@ public class EventServiceImpl implements EventService {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
         Root<Event> root = criteriaQuery.from(Event.class);
-        List<Predicate> predicates = getPredicatesPublic(text, categories, paid, rangeStart, rangeEnd, criteriaBuilder, root);
+        LocalDateTime start = rangeStart == null ? LocalDateTime.now() : LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime end = rangeEnd == null ? start.plusYears(1) : LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        sort = sort == null ? "EVENT_DATE" : sort;
+        List<Predicate> predicates = getPredicatesPublic(text, categories, paid, start, end, criteriaBuilder, root);
         List<Event> events;
         int page = pageNumber(from, size);
         criteriaQuery.select(root).where(predicates.toArray(Predicate[]::new));

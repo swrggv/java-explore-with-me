@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.Create;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.NewCompilationDto;
 
@@ -16,7 +17,7 @@ public class CompilationAdminController {
     private final CompilationService compilationService;
 
     @PostMapping
-    public CompilationDto addCompilation(@RequestBody NewCompilationDto compilationDto) {
+    public CompilationDto addCompilation(@Validated(Create.class) @RequestBody NewCompilationDto compilationDto) {
         log.info("Add new compilation {}", compilationDto);
         return compilationService.addCompilation(compilationDto);
     }
