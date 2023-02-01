@@ -5,9 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.exception.ModelNotFoundException;
+import ru.practicum.ewm.user.dto.UserMapper;
 import ru.practicum.ewm.user.dto.NewUserRequest;
 import ru.practicum.ewm.user.dto.UserDto;
-import ru.practicum.ewm.user.dto.UserMapper;
 import ru.practicum.ewm.user.model.User;
 
 import java.util.List;
@@ -18,6 +18,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    private final UserMapper mapper;
+
     @Override
     public List<UserDto> getUsers(List<Long> ids, int from, int size) {
         int page = pageNumber(from, size);
@@ -27,16 +29,16 @@ public class UserServiceImpl implements UserService {
         } else {
             users = userRepository.findAll(PageRequest.of(page, size)).getContent();
         }
-        return UserMapper.toUserDtoList(users);
+        return mapper.toUserDtoList(users);
     }
 
 
     @Transactional
     @Override
     public UserDto addUser(NewUserRequest userRequest) {
-        User user = UserMapper.toUserFromNewUserRequest(userRequest);
+        User user = mapper.toUser(userRequest);
         user = userRepository.save(user);
-        return UserMapper.toUserDto(user);
+        return mapper.toUserDto(user);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(long userId) {
-        return UserMapper.toUserDto(fromOptionalToUSer(userId));
+        return mapper.toUserDto(fromOptionalToUSer(userId));
     }
 
     private User fromOptionalToUSer(long userId) {

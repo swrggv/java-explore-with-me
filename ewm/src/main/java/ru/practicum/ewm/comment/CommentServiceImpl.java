@@ -21,6 +21,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final CommentMapper mapper;
 
     @Override
     @Transactional
@@ -29,12 +30,12 @@ public class CommentServiceImpl implements CommentService {
         Event event = fromOptionalToEvent(eventId);
         Comment comment = new Comment(newCommentDto.getText(), user, event);
         comment = commentRepository.save(comment);
-        return CommentMapper.toCommentDtoFromComment(comment);
+        return mapper.toCommentDto(comment);
     }
 
     @Override
     public CommentDto getComment(long commentId) {
-        return CommentMapper.toCommentDtoFromComment(fromOptionalToComment(commentId));
+        return mapper.toCommentDto(fromOptionalToComment(commentId));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         checkOwner(comment, userId);
         comment.setText(commentDto.getText());
         comment = commentRepository.save(comment);
-        return CommentMapper.toCommentDtoFromComment(comment);
+        return mapper.toCommentDto(comment);
     }
 
     @Override

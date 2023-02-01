@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper mapper;
 
     @Override
     @Transactional
@@ -27,9 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ModelAlreadyExistException("Can not create category",
                     String.format("Category %s already exist", newCategoryDto.getName()));
         } else {
-            Category category = CategoryMapper.toCategoryFromNewCategoryDto(newCategoryDto);
+            Category category = mapper.toCategory(newCategoryDto);
             category = categoryRepository.save(category);
-            return CategoryMapper.toCategoryDtoFromCategory(category);
+            return mapper.toCategoryDto(category);
         }
     }
 
@@ -37,10 +38,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDto changeCategory(CategoryDto categoryDto) {
         if (isExistCategoryById(categoryDto.getId())) {
-            Category newCategory = CategoryMapper.toCategoryFromCategoryDto(categoryDto);
-            Category oldCategory = CategoryMapper.toCategoryFromCategoryDto(getCategory(categoryDto.getId()));
+            Category newCategory = mapper.toCategory(categoryDto);
+            Category oldCategory = mapper.toCategory(getCategory(categoryDto.getId()));
             Category result = patch(oldCategory, newCategory);
-            return CategoryMapper.toCategoryDtoFromCategory(categoryRepository.save(result));
+            return mapper.toCategoryDto(categoryRepository.save(result));
         } else {
             throw new BadRequestException("Category not found",
                     String.format("Category %d not found", categoryDto.getId()));
@@ -52,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(idCategory).orElseThrow(
                 () -> new ModelNotFoundException("Impossible find category",
                         String.format("Category %d not found", idCategory)));
-        return CategoryMapper.toCategoryDtoFromCategory(category);
+        return mapper.toCategoryDto(category);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> getCategoryFromSize(int from, int size) {
         int page = pageNumber(from, size);
         List<Category> categories = categoryRepository.findAll(PageRequest.of(page, size)).getContent();
-        return CategoryMapper.toCategoryDtoListFromCategory(categories);
+        return mapper.toCategoryDtoList(categories);
     }
 
     private int pageNumber(int from, int size) {
