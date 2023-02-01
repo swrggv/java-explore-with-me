@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import ru.practicum.ewm.category.dto.CategoryMapper;
 import ru.practicum.ewm.category.model.Category;
+import ru.practicum.ewm.comment.dto.CommentMapper;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.user.dto.UserMapper;
 import ru.practicum.ewm.user.model.User;
@@ -30,6 +31,7 @@ public class EventMapper {
         dto.setTitle(event.getTitle());
         dto.setViews(views);
         dto.setRequestModeration(event.getRequestModeration());
+        dto.setComments(CommentMapper.toListCommentDtoFromComment(event.getComments()));
         return dto;
     }
 

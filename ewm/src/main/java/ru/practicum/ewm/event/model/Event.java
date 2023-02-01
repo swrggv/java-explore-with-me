@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.practicum.ewm.category.model.Category;
+import ru.practicum.ewm.comment.model.Comment;
 import ru.practicum.ewm.event.State;
 import ru.practicum.ewm.participants.model.ParticipationRequest;
 import ru.practicum.ewm.user.model.User;
@@ -63,4 +64,7 @@ public class Event {
     private Boolean requestModeration = false;
     @Column(name = "confirmed_requests")
     private int confirmedRequests;
+    @OneToMany(mappedBy = "event")
+    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 }
