@@ -26,14 +26,16 @@ public class CompilationServiceImpl implements CompilationService {
     private final ClientService clientService;
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
+    private final CompilationMapper compilationMapper;
+    private final EventMapper eventMapper;
 
     @Override
     @Transactional
     public CompilationDto addCompilation(NewCompilationDto compilationDto) {
         List<Event> events = eventRepository.findAllById(compilationDto.getEvents());
-        Compilation compilation = CompilationMapper.toCompilationFromNewCompilationDto(compilationDto, events);
+        Compilation compilation = compilationMapper.toCompilation(compilationDto, events);
         compilation = compilationRepository.save(compilation);
-        return CompilationMapper.toDtoFromCompilation(compilation, transferToListEventShortDto(events));
+        return compilationMapper.toCompilationDto(compilation, transferToListEventShortDto(events));
     }
 
     @Override
@@ -86,12 +88,12 @@ public class CompilationServiceImpl implements CompilationService {
     public CompilationDto getCompilation(long compId) {
         Compilation compilation = fromOptionalToCompilation(compId);
         List<Event> events = compilation.getEvents();
-        return CompilationMapper.toDtoFromCompilation(compilation, transferToListEventShortDto(events));
+        return compilationMapper.toCompilationDto(compilation, transferToListEventShortDto(events));
     }
 
     private List<EventShortDto> transferToListEventShortDto(List<Event> events) {
         return events.stream()
-                .map(x -> EventMapper.toShortEventDtoFromEvent(x, clientService.getStats("events/" + x.getId())))
+                .map(x -> eventMapper.toShortEventDto(x, clientService.getStats("events/" + x.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -100,9 +102,9 @@ public class CompilationServiceImpl implements CompilationService {
         for (Compilation compilation : compilations) {
             List<Event> events = compilation.getEvents();
             List<EventShortDto> eventShortDtos = events.stream()
-                    .map(x -> EventMapper.toShortEventDtoFromEvent(x, clientService.getStats("events/" + x.getId())))
+                    .map(x -> eventMapper.toShortEventDto(x, clientService.getStats("events/" + x.getId())))
                     .collect(Collectors.toList());
-            result.add(CompilationMapper.toDtoFromCompilation(compilation, eventShortDtos));
+            result.add(compilationMapper.toCompilationDto(compilation, eventShortDtos));
         }
         return result;
     }

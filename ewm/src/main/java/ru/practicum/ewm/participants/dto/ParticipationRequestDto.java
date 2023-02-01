@@ -20,6 +20,6 @@ public class ParticipationRequestDto {
     @NotNull(groups = Create.class, message = "Id event is required")
     private Long event;
     @NotNull(groups = Create.class, message = "Id event is required")
-    private Long requester;
+    private Long requestor;
     private Status status = Status.PENDING;
 }

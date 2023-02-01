@@ -26,6 +26,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
+    private final ParticipationRequestMapper mapper;
+
     @Override
     @Transactional
     public ParticipationRequestDto addRequest(long userId, long eventId) {
@@ -39,7 +41,7 @@ public class ParticipationServiceImpl implements ParticipationService {
             request.setStatus(Status.CONFIRMED);
         }
         request = participationRepository.save(request);
-        return ParticipationRequestMapper.toDtoFromRequest(request);
+        return mapper.toDto(request);
     }
 
     @Override
@@ -58,21 +60,21 @@ public class ParticipationServiceImpl implements ParticipationService {
             throw new NoRootException("Could not reject request",
                     String.format("User %s is not requestor for request %d", userId, requestId));
         }
-        return ParticipationRequestMapper.toDtoFromRequest(request);
+        return mapper.toDto(request);
     }
 
     @Override
     public List<ParticipationRequestDto> getAllRequestsForUser(long userId) {
         User user = fromOptionalToUser(userId);
         List<ParticipationRequest> requests = participationRepository.findAllByRequestor(user);
-        return ParticipationRequestMapper.toListDtoFromRequests(requests);
+        return mapper.toListDto(requests);
     }
 
     @Override
     public List<ParticipationRequestDto> getRequestForOwner(long eventId, long userId) {
         Event event = fromOptionalToEvent(eventId);
         if (event.getInitiator().getId() == userId) {
-            return ParticipationRequestMapper.toListDtoFromRequests(participationRepository.findAllByEvent(event));
+            return mapper.toListDto(participationRepository.findAllByEvent(event));
         } else {
             throw new NoRootException("No root for this action",
                     String.format("User %d is not owner the event %d", userId, eventId));
@@ -94,7 +96,7 @@ public class ParticipationServiceImpl implements ParticipationService {
             throw new BadRequestException("Limit is over",
                     String.format("For event %d participation limit is over", eventId));
         }
-        return ParticipationRequestMapper.toDtoFromRequest(request);
+        return mapper.toDto(request);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class ParticipationServiceImpl implements ParticipationService {
         event.setConfirmedRequests(confirmedRequests);
         eventRepository.save(event);
         participationRepository.save(request);
-        return ParticipationRequestMapper.toDtoFromRequest(request);
+        return mapper.toDto(request);
     }
 
     private void rejectAll(Event event) {

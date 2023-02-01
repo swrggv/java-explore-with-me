@@ -37,6 +37,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
 
     private final EntityManager entityManager;
+    private final EventMapper mapper;
 
     @Override
     @Transactional
@@ -48,7 +49,7 @@ public class EventServiceImpl implements EventService {
             event.setPublishedOn(LocalDateTime.now());
             event.setState(State.PUBLISHED);
             event = eventRepository.save(event);
-            return EventMapper.toFullEventDtoFromEvent(event, getViews(event.getId()));
+            return mapper.toFullEventDto(event, getViews(event.getId()));
         } else {
             throw new BadRequestException("Impossible to publish event",
                     "Date or state impede publishing");
@@ -61,7 +62,7 @@ public class EventServiceImpl implements EventService {
         Event event = fromOptionalToEvent(eventId);
         if (event.getState() == State.PENDING) {
             event.setState(State.CANCELED);
-            return EventMapper.toFullEventDtoFromEvent(event, getViews(event.getId()));
+            return mapper.toFullEventDto(event, getViews(event.getId()));
         } else {
             throw new BadRequestException("Impossible reject event",
                     String.format("Event %d already published or rejected", eventId));
@@ -74,7 +75,7 @@ public class EventServiceImpl implements EventService {
         Event oldEvent = fromOptionalToEvent(eventId);
         Event result = patchAdmin(oldEvent, adminEvent);
         result = eventRepository.save(result);
-        return EventMapper.toFullEventDtoFromEvent(result, getViews(result.getId()));
+        return mapper.toFullEventDto(result, getViews(result.getId()));
     }
 
     @Override
@@ -134,8 +135,8 @@ public class EventServiceImpl implements EventService {
         }
         if (sort.equals("VIEWS")) {
             return events.stream()
-                    .map(x -> EventMapper
-                            .toShortEventDtoFromEvent(x, getViews(x.getId())))
+                    .map(x -> mapper
+                            .toShortEventDto(x, getViews(x.getId())))
                     .sorted(Comparator.comparing(EventShortDto::getViews))
                     .collect(Collectors.toList());
         }
@@ -147,7 +148,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventByIdPublic(long id) {
         Event event = fromOptionalToEvent(id);
         if (event.getState() == State.PUBLISHED) {
-            return EventMapper.toFullEventDtoFromEvent(event, getViews(event.getId()));
+            return mapper.toFullEventDto(event, getViews(event.getId()));
         } else {
             throw new NoRootException("Impossible to get event",
                     String.format("This event %d isn't published", id));
@@ -170,7 +171,7 @@ public class EventServiceImpl implements EventService {
         checkState(event);
         patchPrivate(event, updateEvent);
         event = eventRepository.save(event);
-        return EventMapper.toFullEventDtoFromEvent(event, getViews(event.getId()));
+        return mapper.toFullEventDto(event, getViews(event.getId()));
     }
 
     @Override
@@ -179,14 +180,14 @@ public class EventServiceImpl implements EventService {
         checkDate(newEventDto.getEventDate());
         User user = fromOptionalToUser(userId);
         Category category = fromOptionalToCategory(newEventDto.getCategory());
-        Event event = EventMapper.toEventFromNewEventDto(newEventDto, category, user);
+        Event event = mapper.toEvent(newEventDto, category, user);
         event = eventRepository.save(event);
-        return EventMapper.toFullEventDtoFromEvent(event, getViews(event.getId()));
+        return mapper.toFullEventDto(event, getViews(event.getId()));
     }
 
     @Override
     public EventFullDto getEventById(Long eventId) {
-        return EventMapper.toFullEventDtoFromEvent(fromOptionalToEvent(eventId), getViews(eventId));
+        return mapper.toFullEventDto(fromOptionalToEvent(eventId), getViews(eventId));
     }
 
     @Override
@@ -197,14 +198,14 @@ public class EventServiceImpl implements EventService {
 
     private List<EventFullDto> transferToFullEventDto(List<Event> events) {
         return events.stream()
-                .map(x -> EventMapper.toFullEventDtoFromEvent(x, getViews(x.getId())))
+                .map(x -> mapper.toFullEventDto(x, getViews(x.getId())))
                 .collect(Collectors.toList());
     }
 
     private List<EventShortDto> transferToShortEventDto(List<Event> events) {
         return events.stream()
-                .map(x -> EventMapper
-                        .toShortEventDtoFromEvent(x, getViews(x.getId())))
+                .map(x -> mapper
+                        .toShortEventDto(x, getViews(x.getId())))
                 .collect(Collectors.toList());
     }
 
