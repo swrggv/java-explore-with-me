@@ -1,34 +1,30 @@
 package ru.practicum.ewm.category;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import ru.practicum.ewm.category.dto.CategoryDto;
 import ru.practicum.ewm.category.dto.NewCategoryDto;
+import ru.practicum.ewm.exception.BadRequestException;
 import ru.practicum.ewm.exception.ModelAlreadyExistException;
 import ru.practicum.ewm.exception.ModelNotFoundException;
 
-import javax.transaction.Transactional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Transactional
-@SpringBootTest(
-        properties = "db.name=test",
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-@TestPropertySource(properties = {"db.name=test"})
+@SpringBootTest
+@TestPropertySource(properties = {"application.properties"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CategoryServiceImplTest {
     @Autowired
     private CategoryService categoryService;
     private NewCategoryDto newCategoryDto;
 
     @BeforeEach
-    void prepare() {
+    void setUp() {
         newCategoryDto = new NewCategoryDto("category");
     }
 
@@ -48,8 +44,8 @@ class CategoryServiceImplTest {
 
     @Test
     void changeNotExistingCategory() {
-        CategoryDto categoryDto = new CategoryDto(-1, "category");
-        ModelNotFoundException ex = assertThrows(ModelNotFoundException.class,
+        CategoryDto categoryDto = new CategoryDto(1000, "category");
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 () -> categoryService.changeCategory(categoryDto));
         assertThat(ex.getMessage().contains("Category not found"));
     }
@@ -60,15 +56,15 @@ class CategoryServiceImplTest {
         categoryService.deleteCategory(categoryDto.getId());
         ModelNotFoundException ex = assertThrows(ModelNotFoundException.class,
                 () -> categoryService.getCategory(categoryDto.getId()));
-        assertThat(ex.getMessage()).contains("Can not get category");
+        assertThat(ex.getMessage()).contains("Impossible find category");
     }
 
     @Test
-    void failCreateCategoryWithNonUniqueName() {
+    void failCreateCategoryWithNotUniqueName() {
         categoryService.addCategory(newCategoryDto);
-        NewCategoryDto newCategory = new NewCategoryDto("category");
+        NewCategoryDto newCategoryWithNotUniqueName = new NewCategoryDto("category");
         ModelAlreadyExistException ex = assertThrows(ModelAlreadyExistException.class,
-                () -> categoryService.addCategory(newCategory));
+                () -> categoryService.addCategory(newCategoryWithNotUniqueName));
         assertThat(ex.getMessage().contains("Can not create category"));
     }
 
