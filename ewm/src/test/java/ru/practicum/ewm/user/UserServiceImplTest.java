@@ -1,40 +1,37 @@
 package ru.practicum.ewm.user;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import ru.practicum.ewm.user.dto.NewUserRequest;
 import ru.practicum.ewm.user.dto.UserDto;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
-@SpringBootTest(
-        properties = "db.name=test",
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-@TestPropertySource(properties = {"db.name=test"})
+@SpringBootTest
+@TestPropertySource(properties = "application.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserServiceImplTest {
     @Autowired
     private UserService userService;
     private NewUserRequest newUserRequest;
+    private UserDto userDto;
 
     @BeforeEach
-    void prepare() {
+    void setUp() {
         newUserRequest = new NewUserRequest("user", "user@gmail.com");
+        userDto = new UserDto(1, "user", "user@gmail.com");
     }
 
     @Test
     void addUser() {
-        UserDto userDto = userService.addUser(newUserRequest);
-        assertThat(userDto.getName()).isEqualTo(newUserRequest.getName());
-        assertThat(userDto.getEmail()).isEqualTo(newUserRequest.getEmail());
+        UserDto result = userService.addUser(newUserRequest);
+        assertThat(result).isEqualTo(userDto);
     }
 
     @Test
@@ -45,9 +42,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAllUsersByOneId() {
-        UserDto userDto = userService.addUser(newUserRequest);
-        userService.addUser(new NewUserRequest("user2", "email2@gmail.com"));
+    void getUserById() {
+        userService.addUser(newUserRequest);
         assertThat(userService.getUsers(List.of(userDto.getId()), 0, 10)).hasSize(1);
     }
 }

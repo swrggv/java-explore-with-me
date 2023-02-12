@@ -2,6 +2,7 @@ package ru.practicum.ewm.participants.dto;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.Create;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ParticipationRequestDto {
     @NotNull(groups = Create.class, message = "Id event is required")
     private Long id;
