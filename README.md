@@ -12,6 +12,9 @@ Most popular categories can be pinned on the first page by an administrator.
 # For starting project
 You have to have 2 databases, one of them for main service another for statistic service  
 *git clone*  
-*docker compose up*  
+*docker compose up* 
+
+# Status
+I am working on reducing the size of the methods
 
 
