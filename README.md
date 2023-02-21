@@ -1,9 +1,9 @@
 # About project
-This application was created for searching events.  
+This application was created to help you look for interesting locations and events in your city.  
 You can create, delete, update, serch events.  
-There are some accesses: private, admin, public  
-For more convinient search there are categories.  
-Administrators can pin the most popular categories on the first page.  
+There are different levels of access: private, admin, public  
+For more convenient  search there are categories.  
+Most popular categories can be pinned on the first page by an administrator.  
 
 # Specification Swagger API
 * for main service - [ewm-main-service-spec.json](https://raw.githubusercontent.com/yandex-praktikum/java-explore-with-me/main/ewm-main-service-spec.json)
