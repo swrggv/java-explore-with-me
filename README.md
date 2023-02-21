@@ -1,4 +1,4 @@
-# About project
+# Explore with me
 This application was created to help you look for interesting locations and events in your city.  
 You can create, delete, update, serch events.  
 There are different levels of access: private, admin, public  
